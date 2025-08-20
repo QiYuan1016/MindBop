@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Ranking</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Ranking</h1>
+    <ol id="ranking-list"></ol>
+  </div>
+
+  <div class="bottom-nav">
+    <button onclick="goToPage('home.html')">Home</button>
+    <button onclick="goToPage('progress.html')">Progress</button>
+    <button onclick="goToPage('achievement.html')">Achievements</button>
+    <button onclick="goToPage('shop.html')">Shop</button>
+    <button onclick="goToPage('decoration.html')">Decoration</button>
+    <button onclick="goToPage('ranking.html')">Ranking</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function loadRanking() {
+      const { data, error } = await supabase
+        .from('points')
+        .select('points, users(username)')
+        .order('points', { ascending: false })
+        .limit(20);
+      if (error) { console.log(error); return; }
+      const list = document.getElementById('ranking-list');
+      list.innerHTML = '';
+      data.forEach((entry, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${entry.users.username || entry.user_id} - ${entry.points} pts`;
+        list.appendChild(li);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', loadRanking);
+  </script>
+</body>
+
+</html>

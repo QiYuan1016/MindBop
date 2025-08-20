@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Progress</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Progress</h1>
+    <div id="task-list"></div>
+    <button onclick="completeTaskUI()">Complete Selected Task</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button onclick="goToPage('home.html')">Home</button>
+    <button onclick="goToPage('progress.html')">Progress</button>
+    <button onclick="goToPage('achievement.html')">Achievements</button>
+    <button onclick="goToPage('shop.html')">Shop</button>
+    <button onclick="goToPage('decoration.html')">Decoration</button>
+    <button onclick="goToPage('ranking.html')">Ranking</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function loadTasks() {
+      const user = getCurrentUser();
+      const type = new URLSearchParams(window.location.search).get('type');
+      const { data, error } = await supabase.from('tasks').select('*').eq('user_id', user.id);
+      const list = document.getElementById('task-list');
+      list.innerHTML = '';
+      data.forEach(task => {
+        const div = document.createElement('div');
+        div.innerHTML = `<input type="radio" name="task" value="${task.task_name}">${task.task_name} - ${task.status}`;
+        list.appendChild(div);
+      });
+    }
+
+    async function completeTaskUI() {
+      const user = getCurrentUser();
+      const selected = document.querySelector('input[name="task"]:checked');
+      if (!selected) { alert("Select a task first"); return; }
+      await completeTask(user.id, selected.value, 10);
+      loadTasks();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadTasks);
+  </script>
+</body>
+
+</html>

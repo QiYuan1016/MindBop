@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Achievements</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Achievements</h1>
+    <div id="achievement-list"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <button onclick="goToPage('home.html')">Home</button>
+    <button onclick="goToPage('progress.html')">Progress</button>
+    <button onclick="goToPage('achievement.html')">Achievements</button>
+    <button onclick="goToPage('shop.html')">Shop</button>
+    <button onclick="goToPage('decoration.html')">Decoration</button>
+    <button onclick="goToPage('ranking.html')">Ranking</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function loadAchievements() {
+      const user = getCurrentUser();
+      const { data, error } = await supabase.from('achievements').select('*').eq('user_id', user.id);
+      const list = document.getElementById('achievement-list');
+      list.innerHTML = '';
+      data.forEach(ach => {
+        const div = document.createElement('div');
+        div.textContent = `${ach.achievement_name} - ${ach.stars} star(s)`;
+        list.appendChild(div);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', loadAchievements);
+  </script>
+</body>
+
+</html>

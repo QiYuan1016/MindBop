@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Shop</h1>
+    <div id="item-list">
+      <button onclick="buyItem('Tree')">Tree</button>
+      <button onclick="buyItem('Flower')">Flower</button>
+      <button onclick="buyItem('Bench')">Bench</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button onclick="goToPage('home.html')">Home</button>
+    <button onclick="goToPage('progress.html')">Progress</button>
+    <button onclick="goToPage('achievement.html')">Achievements</button>
+    <button onclick="goToPage('shop.html')">Shop</button>
+    <button onclick="goToPage('decoration.html')">Decoration</button>
+    <button onclick="goToPage('ranking.html')">Ranking</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function buyItem(item) {
+      const user = getCurrentUser();
+      await placeDecoration(user.id, item, 1);
+      alert(`${item} purchased!`);
+    }
+  </script>
+</body>
+
+</html>

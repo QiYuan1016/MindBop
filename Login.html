@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+  <h2>Login / Register</h2>
+  <input id="email" type="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Register</button>
+  <p id="msg"></p>
+
+  <script>
+    const SUPABASE_URL = "https://btepmshcbkgjgmevhezp.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0ZXBtc2hjYmtnamdtZXZoZXpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2NTM4NTksImV4cCI6MjA3MTIyOTg1OX0.YuX_ZBkhJO5LHuXGZtamvHlE0M_MjhrWUr3TILiRZ5U"; // ⚠️ 改成你的 anon key
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      let { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        document.getElementById("msg").innerText = "❌ " + error.message;
+      } else {
+        document.getElementById("msg").innerText = "✅ Login success!";
+        window.location.href = "index.html";
+      }
+    }
+
+    async function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      let { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        document.getElementById("msg").innerText = "❌ " + error.message;
+      } else {
+        document.getElementById("msg").innerText = "✅ Registered! Please login.";
+      }
+    }
+  </script>
+</body>
+
+</html>

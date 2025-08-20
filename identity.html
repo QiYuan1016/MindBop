@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Identity</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="images/logo.png" class="logo">
+    <h1>Select Your Identity</h1>
+    <button onclick="chooseIdentity('Personal')">Personal</button>
+    <button onclick="chooseIdentity('Family')">Family</button>
+    <button onclick="chooseIdentity('School/Organization')">School / Organization</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function chooseIdentity(identityType) {
+      const user = getCurrentUser();
+      if (!user) {
+        alert("User not logged in!");
+        return;
+      }
+      // 更新 users 表的 identity 字段
+      const { data, error } = await supabase
+        .from('users')
+        .upsert({ id: user.id, identity: identityType }, { onConflict: 'id' });
+      if (error) { alert(error.message); return; }
+
+      // 跳转到主页
+      goToPage('home.html');
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MindGreen - Decoration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Decoration</h1>
+    <div class="decoration-area" id="decoration-area"></div>
+    <button onclick="addDecoration('Tree')">Add Tree</button>
+    <button onclick="addDecoration('Flower')">Add Flower</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button onclick="goToPage('home.html')">Home</button>
+    <button onclick="goToPage('progress.html')">Progress</button>
+    <button onclick="goToPage('achievement.html')">Achievements</button>
+    <button onclick="goToPage('shop.html')">Shop</button>
+    <button onclick="goToPage('decoration.html')">Decoration</button>
+    <button onclick="goToPage('ranking.html')">Ranking</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+  <script>
+    async function addDecoration(item) {
+      const user = getCurrentUser();
+      const area = document.getElementById('decoration-area');
+      const img = document.createElement('img');
+      img.src = `images/${item}.png`;
+      img.style.left = `${Math.random() * 80}%`;
+      img.style.top = `${Math.random() * 80}%`;
+      area.appendChild(img);
+      await placeDecoration(user.id, item, 1);
+    }
+  </script>
+</body>
+
+</html>
